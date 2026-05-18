@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div>
-                    <label id="lbl-agency-email" class="block text-sm font-semibold text-gray-700 mb-1">聯絡人電子郵件 / Email Address (用於接收存檔)</label>
+                    <label id="lbl-agency-email" class="block text-sm font-semibold text-gray-700 mb-1">聯絡人電子郵件 / Email Address (用於接收確認信及PDF發票)</label>
                     <input type="email" id="agency-email" required placeholder="example@agency.com" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
                 </div>
             </div>
@@ -147,7 +147,7 @@
     </div>
 
     <script>
-        // 你的後端 Google Apps Script 正式 API 網址
+        // 已自動為你置入 100% 正確的 Google Apps Script 正式 API 網址 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-Dd4qB8ZwCFR01xpNgcJTefl_gP_xl2tgESqeKJgIIV5cJzt01cni2mX2ddWfdGix/exec";
 
         let currentLang = 'HK'; 
@@ -160,7 +160,7 @@
                 subtitle: "本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。提交後系統將自動發送存檔郵件。",
                 lblAgencyName: "旅行社名稱 / Agency Name",
                 placeholderAgency: "例如：香港海外假期有限公司",
-                lblAgencyEmail: "聯絡人電子郵件 / Email Address (用於接收存檔)",
+                lblAgencyEmail: "聯絡人電子郵件 / Email Address (用於接收確認信及PDF發票)",
                 sec1: "第一部分：車次與行程資訊",
                 sec2: "第二部分：旅客名單",
                 lblDate: "出發日期 / Departure Date",
@@ -174,7 +174,6 @@
                 lblPDocType: "證件類型",
                 lblPDocNo: "證件號碼",
                 docs: ["回鄉證 (港澳居民來往內地通行證)", "護照 (Passport)", "中國居民身份證"],
-                // 🌟 繁體席位翻譯
                 seats: [
                     { value: "商務座", text: "商務座 (Business Class)" },
                     { value: "一等座(成人)", text: "一等座 (成人)" },
@@ -190,7 +189,7 @@
                 subtitle: "本系统专供合作旅行社填报团队及个人火车票定位数据，请务必核对证件信息。提交后系统将自动发送存档邮件。",
                 lblAgencyName: "旅行社名称 / Agency Name",
                 placeholderAgency: "例如：深圳华旅国际旅行社",
-                lblAgencyEmail: "联络人电子邮址 / Email Address (用于接收存档)",
+                lblAgencyEmail: "联络人电子邮址 / Email Address (用于接收存档及PDF发票)",
                 sec1: "第一部分：车次与行程信息",
                 sec2: "第二部分：旅客名单",
                 lblDate: "出发日期 / Departure Date",
@@ -204,7 +203,6 @@
                 lblPDocType: "证件类型",
                 lblPDocNo: "证件号码",
                 docs: ["中国居民身份证", "回乡证 (港澳居民來往內地通行證)", "护照 (Passport)"],
-                // 🌟 簡體席位翻譯
                 seats: [
                     { value: "商務座", text: "商务座 (Business Class)" },
                     { value: "一等座(成人)", text: "一等座 (成人)" },
@@ -217,7 +215,7 @@
             }
         };
 
-        // 語系切換
+        // 語系切換函數
         function switchLanguage(lang) {
             currentLang = lang;
             document.getElementById('btn-lang-hk').className = lang === 'HK' ? 'px-3 py-1 rounded bg-blue-600 font-bold' : 'px-3 py-1 rounded bg-slate-700 hover:bg-slate-600';
@@ -237,7 +235,6 @@
             document.getElementById('btn-add-p').innerText = i18n[lang].btnAddP;
             document.getElementById('btn-submit').innerText = i18n[lang].btnSubmit;
 
-            // 重新刷新證件下拉選單
             const docSelects = document.querySelectorAll('.doc-type-select');
             docSelects.forEach(select => {
                 const currentVal = select.value;
@@ -251,7 +248,6 @@
                 select.value = currentVal || i18n[lang].docs[0].split(' ')[0];
             });
 
-            // 🌟 重新刷新席位下拉選單（繁簡切換）
             const seatSelects = document.querySelectorAll('.p-seat-select');
             seatSelects.forEach(select => {
                 const currentVal = select.value;
@@ -262,10 +258,11 @@
                     opt.innerText = seat.text;
                     select.appendChild(opt);
                 });
-                select.value = currentVal || i18n[lang].seats[3].value; // 預設選二等座成人
+                select.value = currentVal || i18n[lang].seats[3].value; 
             });
         }
 
+        // 動態新增隨行旅客表單
         function addPassenger() {
             passengerCount++;
             const container = document.getElementById('passengers-container');
@@ -299,7 +296,6 @@
             `;
             container.appendChild(card);
             
-            // 初始化證件下拉選單
             const docSelect = card.querySelector('.doc-type-select');
             i18n[currentLang].docs.forEach(doc => {
                 const opt = document.createElement('option');
@@ -308,7 +304,6 @@
                 docSelect.appendChild(opt);
             });
 
-            // 🌟 初始化席位下拉選單
             const seatSelect = card.querySelector('.p-seat-select');
             i18n[currentLang].seats.forEach(seat => {
                 const opt = document.createElement('option');
@@ -316,7 +311,7 @@
                 opt.innerText = seat.text;
                 seatSelect.appendChild(opt);
             });
-            seatSelect.value = "二等座(成人)"; // 預設選中二等座成人
+            seatSelect.value = "二等座(成人)"; 
 
             reindexPassengers();
         }
@@ -338,6 +333,7 @@
             }
         }
 
+        // 表單提交與 AJAX 請求
         async function handleSubmit(event) {
             event.preventDefault();
             
