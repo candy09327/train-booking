@@ -23,56 +23,108 @@
 
         <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-6 py-6">
             <h1 id="title" class="text-2xl font-bold tracking-wide">跨境火車票團體訂購系統</h1>
-            <p id="subtitle" class="text-sm opacity-85 mt-2">本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。</p>
+            <p id="subtitle" class="text-sm opacity-85 mt-2">本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。提交後系統將自動發送存檔郵件。</p>
         </div>
 
         <form id="booking-form" onsubmit="handleSubmit(event)" class="p-6 space-y-6">
             
-            <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label id="lbl-agency-name" class="block text-sm font-semibold text-gray-700 mb-1">旅行社名稱 / Agency Name</label>
-                    <input type="text" id="agency-name" required placeholder="例如：香港海外假期有限公司" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+            <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label id="lbl-agency-name" class="block text-sm font-semibold text-gray-700 mb-1">旅行社名稱 / Agency Name</label>
+                        <input type="text" id="agency-name" required placeholder="例如：香港海外假期有限公司" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    </div>
+                    <div>
+                        <label id="lbl-agency-contact" class="block text-sm font-semibold text-gray-700 mb-1">手提電話 / Mobile Number</label>
+                        <input type="tel" id="agency-contact" required placeholder="請輸入聯絡人電話" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    </div>
                 </div>
                 <div>
-                    <label id="lbl-agency-contact" class="block text-sm font-semibold text-gray-700 mb-1">手提電話 / Mobile Number</label>
-                    <input type="tel" id="agency-contact" required placeholder="請輸入聯絡人電話" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    <label id="lbl-agency-email" class="block text-sm font-semibold text-gray-700 mb-1">聯絡人電子郵件 / Email Address (用於接收存檔)</label>
+                    <input type="email" id="agency-email" required placeholder="example@agency.com" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
                 </div>
             </div>
 
             <div>
                 <h2 id="sec-1" class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-blue-600 pl-2">第一部分：車次與行程資訊</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                
+                <div class="space-y-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">出發車站 / Departure</label>
-                        <select id="route-from" required class="w-full border rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
-                            <option value="香港西九龍">香港西九龍 (Hong Kong West Kowloon)</option>
-                        </select>
+                        <span class="inline-block bg-blue-600 text-white text-xs px-2 py-0.5 rounded font-bold mb-2">去程 / Outbound</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">出發車站 / From</label>
+                                <select id="route-from" required class="w-full border rounded-lg px-2 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
+                                    <option value="香港西九龍">香港西九龍 (HK West Kowloon)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">到達車站 / To</label>
+                                <select id="route-to" required class="w-full border rounded-lg px-2 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
+                                    <option value="" disabled selected>-- 請選擇 --</option>
+                                    <option value="福田">福田 (Futian)</option>
+                                    <option value="深圳北">深圳北 (Shenzhen Bei)</option>
+                                    <option value="光明城">光明城 (Guangmingcheng)</option>
+                                    <option value="東莞南">東莞南 (Dongguan Nan)</option>
+                                    <option value="常平">常平 (Changping)</option>
+                                    <option value="東莞">東莞 (Dongguan)</option>
+                                    <option value="虎門">虎門 (Humen)</option>
+                                    <option value="南沙北">南沙北 (Nansha Bei)</option>
+                                    <option value="廣州新塘">廣州新塘 (Guangzhou Xintang)</option>
+                                    <option value="廣州南">廣州南 (Guangzhou Nan)</option>
+                                    <option value="廣州東">廣州東 (Guangzhou Dong)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label id="lbl-date" class="block text-xs font-bold text-gray-600 mb-1">出發日期 / Date</label>
+                                <input type="date" id="route-date" required class="w-full border rounded-lg px-2 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label id="lbl-train-no" class="block text-xs font-bold text-gray-600 mb-1">期望車次 / Train No.</label>
+                                <input type="text" id="route-train" placeholder="選填 如: G6582" class="w-full border rounded-lg px-2 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                            </div>
+                        </div>
                     </div>
+
+                    <hr class="border-gray-200 my-2">
+
                     <div>
-                        <label class="block text-xs font-bold text-gray-600 mb-1">到達車站 / Arrival</label>
-                        <select id="route-to" required class="w-full border rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
-                            <option value="" disabled selected>-- 請選擇到達車站 --</option>
-                            <option value="福田">福田 (Futian)</option>
-                            <option value="深圳北">深圳北 (Shenzhen Bei)</option>
-                            <option value="光明城">光明城 (Guangmingcheng)</option>
-                            <option value="東莞南">東莞南 (Dongguan Nan)</option>
-                            <option value="常平">常平 (Changping)</option>
-                            <option value="東莞">東莞 (Dongguan)</option>
-                            <option value="虎門">虎門 (Humen)</option>
-                            <option value="南沙北">南沙北 (Nansha Bei)</option>
-                            <option value="廣州新塘">廣州新塘 (Guangzhou Xintang)</option>
-                            <option value="廣州南">廣州南 (Guangzhou Nan)</option>
-                            <option value="廣州東">廣州東 (Guangzhou Dong)</option>
-                        </select>
+                        <span class="inline-block bg-indigo-600 text-white text-xs px-2 py-0.5 rounded font-bold mb-2">回程 / Return</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">回程出發站 / From</label>
+                                <select id="return-from" required class="w-full border rounded-lg px-2 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
+                                    <option value="" disabled selected>-- 請選擇 --</option>
+                                    <option value="福田">福田 (Futian)</option>
+                                    <option value="深圳北">深圳北 (Shenzhen Bei)</option>
+                                    <option value="光明城">光明城 (Guangmingcheng)</option>
+                                    <option value="東莞南">東莞南 (Dongguan Nan)</option>
+                                    <option value="常平">常平 (Changping)</option>
+                                    <option value="東莞">東莞 (Dongguan)</option>
+                                    <option value="虎門">虎門 (Humen)</option>
+                                    <option value="南沙北">南沙北 (Nansha Bei)</option>
+                                    <option value="廣州新塘">廣州新塘 (Guangzhou Xintang)</option>
+                                    <option value="廣州南">廣州南 (Guangzhou Nan)</option>
+                                    <option value="廣州東">廣州東 (Guangzhou Dong)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">回程到達站 / To</label>
+                                <select id="return-to" required class="w-full border rounded-lg px-2 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
+                                    <option value="香港西九龍">香港西九龍 (HK West Kowloon)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label id="lbl-return-date" class="block text-xs font-bold text-gray-600 mb-1">回程日期 / Return Date</label>
+                                <input type="date" id="return-date" required class="w-full border rounded-lg px-2 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label id="lbl-return-train-no" class="block text-xs font-bold text-gray-600 mb-1">回程車次 / Train No.</label>
+                                <input type="text" id="return-train" placeholder="選填 如: G6583" class="w-full border rounded-lg px-2 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label id="lbl-date" class="block text-xs font-bold text-gray-600 mb-1">出發日期</label>
-                        <input type="date" id="route-date" required class="w-full border rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label id="lbl-train-no" class="block text-xs font-bold text-gray-600 mb-1">期望車次 (選填)</label>
-                        <input type="text" id="route-train" placeholder="例如: G6582" class="w-full border rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
-                    </div>
+
                 </div>
             </div>
 
@@ -95,93 +147,132 @@
     </div>
 
     <script>
-        // 已自動為你替換為正確的 Google Apps Script 正式 API 網址
+        // 你的後端 Google Apps Script 正式 API 網址
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-Dd4qB8ZwCFR01xpNgcJTefl_gP_xl2tgESqeKJgIIV5cJzt01cni2mX2ddWfdGix/exec";
 
-        let currentLang = 'HK'; // 'HK' 代表繁體，'CN' 代表簡體中文
+        let currentLang = 'HK'; 
         let passengerCount = 0;
 
         // 繁簡詞典
         const i18n = {
             HK: {
                 title: "跨境火車票團體訂購系統",
-                subtitle: "本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。",
+                subtitle: "本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。提交後系統將自動發送存檔郵件。",
                 lblAgencyName: "旅行社名稱 / Agency Name",
                 placeholderAgency: "例如：香港海外假期有限公司",
+                lblAgencyEmail: "聯絡人電子郵件 / Email Address (用於接收存檔)",
                 sec1: "第一部分：車次與行程資訊",
                 sec2: "第二部分：旅客名單",
                 lblDate: "出發日期 / Departure Date",
                 lblTrainNo: "期望車次 (選填) / Train No.",
+                lblReturnDate: "回程日期 / Return Date",
+                lblReturnTrainNo: "回程車次 (選填) / Return Train No.",
                 btnAddP: "+ 新增隨行旅客",
                 btnSubmit: "確認並提交訂票資料",
                 lblPName: "真實姓名 (須與證件一致)",
                 lblPSeat: "席位偏好",
                 lblPDocType: "證件類型",
                 lblPDocNo: "證件號碼",
-                docs: ["回鄉證 (港澳居民來往內地通行證)", "護照 (Passport)", "中國居民身份證"]
+                docs: ["回鄉證 (港澳居民來往內地通行證)", "護照 (Passport)", "中國居民身份證"],
+                // 🌟 繁體席位翻譯
+                seats: [
+                    { value: "商務座", text: "商務座 (Business Class)" },
+                    { value: "一等座(成人)", text: "一等座 (成人)" },
+                    { value: "一等座(小童)", text: "一等座 (小童)" },
+                    { value: "二等座(成人)", text: "二等座 (成人)" },
+                    { value: "二等座(小童)", text: "二等座 (小童)" },
+                    { value: "動臥-上鋪", text: "動臥 - 上鋪" },
+                    { value: "動臥-下鋪", text: "動臥 - 下鋪" }
+                ]
             },
             CN: {
                 title: "跨境火车票团体订购系统",
-                subtitle: "本系统专供合作旅行社填报团队及个人火车票定位数据，请务必核对证件信息。",
+                subtitle: "本系统专供合作旅行社填报团队及个人火车票定位数据，请务必核对证件信息。提交后系统将自动发送存档邮件。",
                 lblAgencyName: "旅行社名称 / Agency Name",
                 placeholderAgency: "例如：深圳华旅国际旅行社",
+                lblAgencyEmail: "联络人电子邮址 / Email Address (用于接收存档)",
                 sec1: "第一部分：车次与行程信息",
                 sec2: "第二部分：旅客名单",
                 lblDate: "出发日期 / Departure Date",
                 lblTrainNo: "期望车次 (选填) / Train No.",
+                lblReturnDate: "回程日期 / Return Date",
+                lblReturnTrainNo: "回程车次 (选填) / Return Train No.",
                 btnAddP: "+ 新增随行旅客",
                 btnSubmit: "确认并提交订票资料",
                 lblPName: "真实姓名 (须与证件一致)",
                 lblPSeat: "席位偏好",
                 lblPDocType: "证件类型",
                 lblPDocNo: "证件号码",
-                docs: ["中国居民身份证", "回乡证 (港澳居民来往内地通行证)", "护照 (Passport)"]
+                docs: ["中国居民身份证", "回乡证 (港澳居民來往內地通行證)", "护照 (Passport)"],
+                // 🌟 簡體席位翻譯
+                seats: [
+                    { value: "商務座", text: "商务座 (Business Class)" },
+                    { value: "一等座(成人)", text: "一等座 (成人)" },
+                    { value: "一等座(小童)", text: "一等座 (小童)" },
+                    { value: "二等座(成人)", text: "二等座 (成人)" },
+                    { value: "二等座(小童)", text: "二等座 (小童)" },
+                    { value: "動臥-上鋪", text: "动卧 - 上铺" },
+                    { value: "動臥-下鋪", text: "动卧 - 下铺" }
+                ]
             }
         };
 
-        // 語系切換函數
+        // 語系切換
         function switchLanguage(lang) {
             currentLang = lang;
             document.getElementById('btn-lang-hk').className = lang === 'HK' ? 'px-3 py-1 rounded bg-blue-600 font-bold' : 'px-3 py-1 rounded bg-slate-700 hover:bg-slate-600';
             document.getElementById('btn-lang-cn').className = lang === 'CN' ? 'px-3 py-1 rounded bg-blue-600 font-bold' : 'px-3 py-1 rounded bg-slate-700 hover:bg-slate-600';
             
-            // 更新靜態文字
             document.getElementById('title').innerText = i18n[lang].title;
             document.getElementById('subtitle').innerText = i18n[lang].subtitle;
             document.getElementById('lbl-agency-name').innerText = i18n[lang].lblAgencyName;
             document.getElementById('agency-name').placeholder = i18n[lang].placeholderAgency;
+            document.getElementById('lbl-agency-email').innerText = i18n[lang].lblAgencyEmail;
             document.getElementById('sec-1').innerText = i18n[lang].sec1;
             document.getElementById('sec-2').innerText = i18n[lang].sec2;
             document.getElementById('lbl-date').innerText = i18n[lang].lblDate;
             document.getElementById('lbl-train-no').innerText = i18n[lang].lblTrainNo;
+            document.getElementById('lbl-return-date').innerText = i18n[lang].lblReturnDate;
+            document.getElementById('lbl-return-train-no').innerText = i18n[lang].lblReturnTrainNo;
             document.getElementById('btn-add-p').innerText = i18n[lang].btnAddP;
             document.getElementById('btn-submit').innerText = i18n[lang].btnSubmit;
 
-            // 重新刷新旅客選單的證件排列順序
+            // 重新刷新證件下拉選單
             const docSelects = document.querySelectorAll('.doc-type-select');
             docSelects.forEach(select => {
                 const currentVal = select.value;
                 select.innerHTML = '';
                 i18n[lang].docs.forEach(doc => {
                     const opt = document.createElement('option');
-                    opt.value = doc.split(' ')[0]; // 取簡稱如 "回鄉證"
+                    opt.value = doc.split(' ')[0];
                     opt.innerText = doc;
                     select.appendChild(opt);
                 });
                 select.value = currentVal || i18n[lang].docs[0].split(' ')[0];
             });
+
+            // 🌟 重新刷新席位下拉選單（繁簡切換）
+            const seatSelects = document.querySelectorAll('.p-seat-select');
+            seatSelects.forEach(select => {
+                const currentVal = select.value;
+                select.innerHTML = '';
+                i18n[lang].seats.forEach(seat => {
+                    const opt = document.createElement('option');
+                    opt.value = seat.value;
+                    opt.innerText = seat.text;
+                    select.appendChild(opt);
+                });
+                select.value = currentVal || i18n[lang].seats[3].value; // 預設選二等座成人
+            });
         }
 
-        // 動態新增隨行旅客表單
         function addPassenger() {
             passengerCount++;
             const container = document.getElementById('passengers-container');
-            
             const card = document.createElement('div');
             card.id = `passenger-card-${passengerCount}`;
             card.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 relative space-y-3 shadow-inner";
             
-            // 拼接旅客內部 HTML
             card.innerHTML = `
                 <button type="button" onclick="removePassenger(${passengerCount})" class="absolute top-3 right-3 text-red-500 hover:text-red-700 text-sm font-bold cursor-pointer">✕ 刪除</button>
                 <span class="inline-block bg-slate-200 text-slate-800 text-xs px-2.5 py-0.5 rounded-full font-bold">旅客 #<span class="p-index">${passengerCount}</span></span>
@@ -193,16 +284,12 @@
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPSeat}</label>
                         <select class="p-seat-select w-full border bg-white rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
-                            <option value="二等座-靠窗">二等座 (靠窗优先)</option>
-                            <option value="二等座-過道">二等座 (过道优先)</option>
-                            <option value="一等座">一等座 (First Class)</option>
-                            <option value="商務座">商務座 (Business)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocType}</label>
                         <select class="doc-type-select p-doc-type w-full border bg-white rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
-                            </select>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocNo}</label>
@@ -212,19 +299,28 @@
             `;
             container.appendChild(card);
             
-            // 初始化該卡的證件下拉選單
-            const select = card.querySelector('.doc-type-select');
+            // 初始化證件下拉選單
+            const docSelect = card.querySelector('.doc-type-select');
             i18n[currentLang].docs.forEach(doc => {
                 const opt = document.createElement('option');
                 opt.value = doc.split(' ')[0];
                 opt.innerText = doc;
-                select.appendChild(opt);
+                docSelect.appendChild(opt);
             });
+
+            // 🌟 初始化席位下拉選單
+            const seatSelect = card.querySelector('.p-seat-select');
+            i18n[currentLang].seats.forEach(seat => {
+                const opt = document.createElement('option');
+                opt.value = seat.value;
+                opt.innerText = seat.text;
+                seatSelect.appendChild(opt);
+            });
+            seatSelect.value = "二等座(成人)"; // 預設選中二等座成人
 
             reindexPassengers();
         }
 
-        // 刪除指定旅客
         function removePassenger(id) {
             const card = document.getElementById(`passenger-card-${id}`);
             if (card) {
@@ -233,7 +329,6 @@
             }
         }
 
-        // 重新編排旅客顯示序號
         function reindexPassengers() {
             const cards = document.getElementById('passengers-container').children;
             let idx = 1;
@@ -243,24 +338,29 @@
             }
         }
 
-        // 表單提交與 AJAX 請求
         async function handleSubmit(event) {
             event.preventDefault();
             
             const msgBox = document.getElementById('status-message');
             const btnSubmit = document.getElementById('btn-submit');
             
-            msgBox.className = "hidden p-4 rounded-lg text-sm font-medium";
+            msgBox.className = "hidden p-4 rounded-lg text-sm font-medium shadow-sm";
             
-            // 收集所有動態加入的旅客資料
             const passengerCards = document.getElementById('passengers-container').children;
             if (passengerCards.length === 0) {
                 alert(currentLang === 'HK' ? "請至少新增一位旅客！" : "请至少新增一位旅客！");
                 return;
             }
 
+            const goDate = document.getElementById('route-date').value;
+            const returnDate = document.getElementById('return-date').value;
+            if (new Date(returnDate) < new Date(goDate)) {
+                alert(currentLang === 'HK' ? "❌ 錯誤：回程日期不能早於去程日期！" : "❌ 错误：回程日期不能早于出发日期！");
+                return;
+            }
+
             btnSubmit.disabled = true;
-            btnSubmit.innerText = currentLang === 'HK' ? "正在加密傳輸數據至雲端試算表..." : "正在加密传输数据至云端试算表...";
+            btnSubmit.innerText = currentLang === 'HK' ? "正在加密傳輸並發送存檔郵件..." : "正在加密传输并发送存档邮件...";
             btnSubmit.className = "w-full bg-gray-400 text-white font-bold py-3 px-4 rounded-xl text-lg shadow cursor-not-allowed";
 
             const passengersData = [];
@@ -273,35 +373,40 @@
                 });
             }
 
-            // 打包完整的請求 payload
             const payload = {
                 agencyName: document.getElementById('agency-name').value,
+                agencyContact: document.getElementById('agency-contact').value,
+                agencyEmail: document.getElementById('agency-email').value,
                 agencyType: currentLang,
                 route: {
                     from: document.getElementById('route-from').value,
                     to: document.getElementById('route-to').value,
-                    date: document.getElementById('route-date').value,
+                    date: goDate,
                     trainNo: document.getElementById('route-train').value
+                },
+                returnRoute: {
+                    from: document.getElementById('return-from').value,
+                    to: document.getElementById('return-to').value,
+                    date: returnDate,
+                    trainNo: document.getElementById('return-train').value
                 },
                 passengers: passengersData
             };
 
             try {
-                // 向 Google Apps Script 發送跨域 POST 請求
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'cors',
-                    headers: { 'Content-Type': 'text/plain' }, // 配合 GAS 接收格式
+                    headers: { 'Content-Type': 'text/plain' }, 
                     body: JSON.stringify(payload)
                 });
 
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    msgBox.innerText = `✅ 提交成功！訂單編號: ${result.orderId}。數據已成功寫入 Google Sheets 數據庫。`;
+                    msgBox.innerHTML = `✅ 提交成功！雙程訂單編號: <strong>${result.orderId}</strong>。<br>數據已寫入試算表，存檔郵件已發送至：${payload.agencyEmail}，請檢查收件箱。`;
                     msgBox.classList.remove('hidden');
                     msgBox.classList.add('bg-green-100', 'text-green-800');
-                    // 重置表單
                     document.getElementById('booking-form').reset();
                     document.getElementById('passengers-container').innerHTML = '';
                     addPassenger();
@@ -309,7 +414,7 @@
                     throw new Error(result.message);
                 }
             } catch (error) {
-                msgBox.innerText = `❌ 提交失敗：${error.message || "無法連接到雲端伺服器，請檢查 GAS 網址設定及權限。"}`;
+                msgBox.innerText = `❌ 提交失敗：${error.message || "無法連接到雲端伺服器，請檢查後端設定。"}`;
                 msgBox.classList.remove('hidden');
                 msgBox.classList.add('bg-red-100', 'text-red-800');
             } finally {
@@ -320,12 +425,15 @@
             }
         }
 
-        // 初始化自動新增第一位隨行旅客
         window.onload = function() {
             addPassenger();
-            // 限制日期選擇器最小只能選今天
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('route-date').min = today;
+            document.getElementById('return-date').min = today;
+            
+            document.getElementById('route-date').addEventListener('change', function() {
+                document.getElementById('return-date').min = this.value;
+            });
         };
     </script>
 </body>
