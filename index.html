@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跨境火車票團體訂購系統 - 旅行社專用</title>
+    <!-- 引入 Tailwind CSS 用於美化界面 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen py-8 px-4">
+
+    <div class="max-w-3xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100">
+        
+        <!-- 頂部導航 / 語系與區域切換 -->
+        <div class="bg-slate-900 px-6 py-3 flex justify-between items-center text-white text-sm">
+            <span id="system-env" class="font-mono text-xs text-slate-400">Environment: Production (Serverless)</span>
+            <div class="flex gap-2">
+                <button type="button" onclick="switchLanguage('HK')" id="btn-lang-hk" class="px-3 py-1 rounded bg-blue-600 font-bold">香港特區 (繁體)</button>
+                <button type="button" onclick="switchLanguage('CN')" id="btn-lang-cn" class="px-3 py-1 rounded bg-slate-700 hover:bg-slate-600">中国内地 (简体)</button>
+            </div>
+        </div>
+
+        <!-- 頁首 Banner -->
+        <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-6 py-6">
+            <h1 id="title" class="text-2xl font-bold tracking-wide">跨境火車票團體訂購系統</h1>
+            <p id="subtitle" class="text-sm opacity-85 mt-2">本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。</p>
+        </div>
+
+        <!-- 表單主體 -->
+        <form id="booking-form" onsubmit="handleSubmit(event)" class="p-6 space-y-6">
+            
+            <!-- 旅行社基本資訊 -->
+            <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label id="lbl-agency-name" class="block text-sm font-semibold text-gray-700 mb-1">旅行社名稱 / Agency Name</label>
+                    <input type="text" id="agency-name" required placeholder="例如：香港海外假期有限公司" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                </div>
+                <div>
+                    <label id="lbl-agency-contact" class="block text-sm font-semibold text-gray-700 mb-1">手提電話 / Mobile Number</label>
+                    <input type="tel" id="agency-contact" required placeholder="請輸入聯絡人電話" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                </div>
+            </div>
+
+            <!-- 第一部分：車次與行程 -->
+            <div>
+                <h2 id="sec-1" class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-blue-600 pl-2">第一部分：車次與行程資訊</h2>
+                <div class="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div>
+                        <label id="lbl-from" class="block text-xs font-bold text-gray-600 mb-1">出發車站</label>
+                        <input type="text" id="route-from" required placeholder="例如: 香港西九龍" class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label id="lbl-to" class="block text-xs font-bold text-gray-600 mb-1">到達車站</label>
+                        <input type="text" id="route-to" required placeholder="例如: 廣州南" class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label id="lbl-date" class="block text-xs font-bold text-gray-600 mb-1">出發日期</label>
+                        <input type="date" id="route-date" required class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label id="lbl-train-no" class="block text-xs font-bold text-gray-600 mb-1">期望車次 (選填)</label>
+                        <input type="text" id="route-train" placeholder="例如: G6582" class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第二部分：旅客名單 -->
+            <div>
+                <div class="flex justify-between items-center mb-3 border-l-4 border-blue-600 pl-2">
+                    <h2 id="sec-2" class="text-lg font-bold text-gray-800">第二部分：旅客名單</h2>
+                    <button type="button" onclick="addPassenger()" id="btn-add-p" class="text-xs bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg font-bold transition">+ 新增隨行旅客</button>
+                </div>
+
+                <!-- 旅客容器 -->
+                <div id="passengers-container" class="space-y-4">
+                    <!-- 動態渲染插入點 -->
+                </div>
+            </div>
+
+            <!-- 狀態提示 -->
+            <div id="status-message" class="hidden p-4 rounded-lg text-sm font-medium shadow-sm"></div>
+
+            <!-- 提交按鈕 -->
+            <button type="submit" id="btn-submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl text-lg shadow-md hover:shadow-lg transition cursor-pointer">
+                確認並提交訂票資料 (Submit)
+            </button>
+        </form>
+    </div>
+
+    <!-- JavaScript 業務邏輯核心 -->
+    <script>
+        // ⚠️ 請在下方貼上你在第一步中，從 Google Apps Script 部署獲得的「網頁應用程式網址」
+        const GOOGLE_SCRIPT_URL = "1qbq0oNSIT-Zd9ibvMiRi81OWB4yLWzAv0Q4uL7Hns8JUyBKy-l-qiDO2";
+
+        let currentLang = 'HK'; // 'HK' 代表繁體，'CN' 代表簡體中文
+        let passengerCount = 0;
+
+        // 繁簡詞典
+        const i18n = {
+            HK: {
+                title: "跨境火車票團體訂購系統",
+                subtitle: "本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。",
+                lblAgencyName: "旅行社名稱",
+                placeholderAgency: "例如：香港海外假期有限公司",
+                sec1: "第一部分：車次與行程資訊",
+                sec2: "第二部分：旅客名單",
+                lblFrom: "出發車站",
+                lblTo: "到達車站",
+                lblDate: "出發日期",
+                lblTrainNo: "期望車次 (選填)",
+                btnAddP: "+ 新增隨行旅客",
+                btnSubmit: "確認並提交訂票資料",
+                lblPName: "真實姓名 (須與證件一致)",
+                lblPSeat: "席位偏好",
+                lblPDocType: "證件類型",
+                lblPDocNo: "證件號碼",
+                docs: ["回鄉證 (港澳居民來往內地通行證)", "護照 (Passport)", "中國居民身份證"]
+            },
+            CN: {
+                title: "跨境火车票团体订购系统",
+                subtitle: "本系统专供合作旅行社填报团队及个人火车票订位数据，请务必核对证件信息。",
+                lblAgencyName: "旅行社名称",
+                placeholderAgency: "例如：深圳华旅国际旅行社",
+                sec1: "第一部分：车次与行程信息",
+                sec2: "第二部分：旅客名单",
+                lblFrom: "出发车站",
+                lblTo: "到达车站",
+                lblDate: "出发日期",
+                lblTrainNo: "期望车次 (选填)",
+                btnAddP: "+ 新增随行旅客",
+                btnSubmit: "确认并提交订票资料",
+                lblPName: "真实姓名 (须与证件一致)",
+                lblPSeat: "席位偏好",
+                lblPDocType: "证件类型",
+                lblPDocNo: "证件号码",
+                docs: ["中国居民身份证", "回乡证 (港澳居民来往内地通行证)", "护照 (Passport)"]
+            }
+        };
+
+        // 語系切換函數
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('btn-lang-hk').className = lang === 'HK' ? 'px-3 py-1 rounded bg-blue-600 font-bold' : 'px-3 py-1 rounded bg-slate-700 hover:bg-slate-600';
+            document.getElementById('btn-lang-cn').className = lang === 'CN' ? 'px-3 py-1 rounded bg-blue-600 font-bold' : 'px-3 py-1 rounded bg-slate-700 hover:bg-slate-600';
+            
+            // 更新靜態文字
+            document.getElementById('title').innerText = i18n[lang].title;
+            document.getElementById('subtitle').innerText = i18n[lang].subtitle;
+            document.getElementById('lbl-agency-name').innerText = i18n[lang].lblAgencyName;
+            document.getElementById('agency-name').placeholder = i18n[lang].placeholderAgency;
+            document.getElementById('sec-1').innerText = i18n[lang].sec1;
+            document.getElementById('sec-2').innerText = i18n[lang].sec2;
+            document.getElementById('lbl-from').innerText = i18n[lang].lblFrom;
+            document.getElementById('lbl-to').innerText = i18n[lang].lblTo;
+            document.getElementById('lbl-date').innerText = i18n[lang].lblDate;
+            document.getElementById('lbl-train-no').innerText = i18n[lang].lblTrainNo;
+            document.getElementById('btn-add-p').innerText = i18n[lang].btnAddP;
+            document.getElementById('btn-submit').innerText = i18n[lang].btnSubmit;
+
+            // 重新刷新旅客選單的證件排列順序
+            const docSelects = document.querySelectorAll('.doc-type-select');
+            docSelects.forEach(select => {
+                const currentVal = select.value;
+                select.innerHTML = '';
+                i18n[lang].docs.forEach(doc => {
+                    const opt = document.createElement('option');
+                    opt.value = doc.split(' ')[0]; // 取簡稱如 "回鄉證"
+                    opt.innerText = doc;
+                    select.appendChild(opt);
+                });
+                select.value = currentVal || i18n[lang].docs[0].split(' ')[0];
+            });
+        }
+
+        // 動態新增隨行旅客表單
+        function addPassenger() {
+            passengerCount++;
+            const container = document.getElementById('passengers-container');
+            
+            const card = document.createElement('div');
+            card.id = `passenger-card-${passengerCount}`;
+            card.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 relative space-y-3 shadow-inner";
+            
+            // 拼接旅客內部 HTML
+            card.innerHTML = `
+                <button type="button" onclick="removePassenger(${passengerCount})" class="absolute top-3 right-3 text-red-500 hover:text-red-700 text-sm font-bold cursor-pointer">✕ 刪除</button>
+                <span class="inline-block bg-slate-200 text-slate-800 text-xs px-2.5 py-0.5 rounded-full font-bold">旅客 #${passengerCount}</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPName}</label>
+                        <input type="text" required class="p-name-input w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPSeat}</label>
+                        <select class="p-seat-select w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                            <option value="二等座-靠窗">二等座 (靠窗优先)</option>
+                            <option value="二等座-過道">二等座 (过道优先)</option>
+                            <option value="一等座">一等座 (First Class)</option>
+                            <option value="商務座">商務座 (Business)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocType}</label>
+                        <select class="doc-type-select p-doc-type w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                            <!-- 透過 JavaScript 語系動態填入 -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocNo}</label>
+                        <input type="text" required placeholder="請輸入證件上的號碼" class="p-doc-no w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+            
+            // 初始化該卡的證件下拉選單
+            const select = card.querySelector('.doc-type-select');
+            i18n[currentLang].docs.forEach(doc => {
+                const opt = document.createElement('option');
+                opt.value = doc.split(' ')[0];
+                opt.innerText = doc;
+                select.appendChild(opt);
+            });
+        }
+
+        // 刪除指定旅客
+        function removePassenger(id) {
+            const card = document.getElementById(`passenger-card-${id}`);
+            if (card) card.remove();
+        }
+
+        // 表單提交與 AJAX 請求
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const msgBox = document.getElementById('status-message');
+            const btnSubmit = document.getElementById('btn-submit');
+            
+            msgBox.className = "hidden p-4 rounded-lg text-sm font-medium";
+            
+            // 收集所有動態加入的旅客資料
+            const passengerCards = document.getElementById('passengers-container').children;
+            if (passengerCards.length === 0) {
+                alert(currentLang === 'HK' ? "請至少新增一位旅客！" : "请至少新增一位旅客！");
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerText = currentLang === 'HK' ? "正在加密傳輸數據至雲端試算表..." : "正在加密传输数据至云端试算表...";
+            btnSubmit.className = "w-full bg-gray-400 text-white font-bold py-3 px-4 rounded-xl text-lg shadow cursor-not-allowed";
+
+            const passengersData = [];
+            for (let card of passengerCards) {
+                passengersData.push({
+                    name: card.querySelector('.p-name-input').value,
+                    seatPref: card.querySelector('.p-seat-select').value,
+                    docType: card.querySelector('.p-doc-type').value,
+                    docNo: card.querySelector('.p-doc-no').value.trim()
+                });
+            }
+
+            // 打包完整的請求 payload
+            const payload = {
+                agencyName: document.getElementById('agency-name').value,
+                agencyType: currentLang,
+                route: {
+                    from: document.getElementById('route-from').value,
+                    to: document.getElementById('route-to').value,
+                    date: document.getElementById('route-date').value,
+                    trainNo: document.getElementById('route-train').value
+                },
+                passengers: passengersData
+            };
+
+            try {
+                // 向 Google Apps Script 發送跨域 POST 請求
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain' }, // 配合 GAS 接收格式
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    msgBox.innerText = `✅ 提交成功！訂單編號: ${result.orderId}。數據已成功寫入 Google Sheets 數據庫。`;
+                    msgBox.classList.remove('hidden');
+                    msgBox.classList.add('bg-green-100', 'text-green-800');
+                    // 重置表單
+                    document.getElementById('booking-form').reset();
+                    document.getElementById('passengers-container').innerHTML = '';
+                    addPassenger();
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                msgBox.innerText = `❌ 提交失敗：${error.message || "無法連接到雲端伺服器，請檢查 GAS 網址設定及權限。"}`;
+                msgBox.classList.remove('hidden');
+                msgBox.classList.add('bg-red-100', 'text-red-800');
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = i18n[currentLang].btnSubmit;
+                btnSubmit.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl text-lg shadow-md hover:shadow-lg transition cursor-pointer";
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        // 初始化自動新增第一位隨行旅客
+        window.onload = function() {
+            addPassenger();
+            // 限制日期選擇器最小只能選今天
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('route-date').min = today;
+        };
+    </script>
+</body>
+</html>
