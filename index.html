@@ -47,22 +47,39 @@
             <!-- 第一部分：車次與行程 -->
             <div>
                 <h2 id="sec-1" class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-blue-600 pl-2">第一部分：車次與行程資訊</h2>
-                <div class="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <div>
-                        <label id="lbl-from" class="block text-xs font-bold text-gray-600 mb-1">出發車站</label>
-                        <input type="text" id="route-from" required placeholder="例如: 香港西九龍" class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <label class="block text-xs font-bold text-gray-600 mb-1">出發車站 / Departure</label>
+                        <!-- 下拉選單：固定為西九龍 -->
+                        <select id="route-from" required class="w-full border rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
+                            <option value="香港西九龍">香港西九龍 (Hong Kong West Kowloon)</option>
+                        </select>
                     </div>
                     <div>
-                        <label id="lbl-to" class="block text-xs font-bold text-gray-600 mb-1">到達車站</label>
-                        <input type="text" id="route-to" required placeholder="例如: 廣州南" class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <label class="block text-xs font-bold text-gray-600 mb-1">到達車站 / Arrival</label>
+                        <!-- 下拉選單：指定內地車站 -->
+                        <select id="route-to" required class="w-full border rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
+                            <option value="" disabled selected>-- 請選擇到達車站 --</option>
+                            <option value="福田">福田 (Futian)</option>
+                            <option value="深圳北">深圳北 (Shenzhen Bei)</option>
+                            <option value="光明城">光明城 (Guangmingcheng)</option>
+                            <option value="東莞南">東莞南 (Dongguan Nan)</option>
+                            <option value="常平">常平 (Changping)</option>
+                            <option value="東莞">東莞 (Dongguan)</option>
+                            <option value="虎門">虎門 (Humen)</option>
+                            <option value="南沙北">南沙北 (Nansha Bei)</option>
+                            <option value="廣州新塘">廣州新塘 (Guangzhou Xintang)</option>
+                            <option value="廣州南">廣州南 (Guangzhou Nan)</option>
+                            <option value="廣州東">廣州東 (Guangzhou Dong)</option>
+                        </select>
                     </div>
                     <div>
                         <label id="lbl-date" class="block text-xs font-bold text-gray-600 mb-1">出發日期</label>
-                        <input type="date" id="route-date" required class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <input type="date" id="route-date" required class="w-full border rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
                     </div>
                     <div>
                         <label id="lbl-train-no" class="block text-xs font-bold text-gray-600 mb-1">期望車次 (選填)</label>
-                        <input type="text" id="route-train" placeholder="例如: G6582" class="w-full border rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <input type="text" id="route-train" placeholder="例如: G6582" class="w-full border rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
                     </div>
                 </div>
             </div>
@@ -103,14 +120,12 @@
             HK: {
                 title: "跨境火車票團體訂購系統",
                 subtitle: "本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。",
-                lblAgencyName: "旅行社名稱",
+                lblAgencyName: "旅行社名稱 / Agency Name",
                 placeholderAgency: "例如：香港海外假期有限公司",
                 sec1: "第一部分：車次與行程資訊",
                 sec2: "第二部分：旅客名單",
-                lblFrom: "出發車站",
-                lblTo: "到達車站",
-                lblDate: "出發日期",
-                lblTrainNo: "期望車次 (選填)",
+                lblDate: "出發日期 / Departure Date",
+                lblTrainNo: "期望車次 (選填) / Train No.",
                 btnAddP: "+ 新增隨行旅客",
                 btnSubmit: "確認並提交訂票資料",
                 lblPName: "真實姓名 (須與證件一致)",
@@ -121,15 +136,13 @@
             },
             CN: {
                 title: "跨境火车票团体订购系统",
-                subtitle: "本系统专供合作旅行社填报团队及个人火车票订位数据，请务必核对证件信息。",
-                lblAgencyName: "旅行社名称",
+                subtitle: "本系统专供合作旅行社填报团队及个人火车票定位数据，请务必核对证件信息。",
+                lblAgencyName: "旅行社名称 / Agency Name",
                 placeholderAgency: "例如：深圳华旅国际旅行社",
                 sec1: "第一部分：车次与行程信息",
                 sec2: "第二部分：旅客名单",
-                lblFrom: "出发车站",
-                lblTo: "到达车站",
-                lblDate: "出发日期",
-                lblTrainNo: "期望车次 (选填)",
+                lblDate: "出发日期 / Departure Date",
+                lblTrainNo: "期望车次 (选填) / Train No.",
                 btnAddP: "+ 新增随行旅客",
                 btnSubmit: "确认并提交订票资料",
                 lblPName: "真实姓名 (须与证件一致)",
@@ -153,8 +166,6 @@
             document.getElementById('agency-name').placeholder = i18n[lang].placeholderAgency;
             document.getElementById('sec-1').innerText = i18n[lang].sec1;
             document.getElementById('sec-2').innerText = i18n[lang].sec2;
-            document.getElementById('lbl-from').innerText = i18n[lang].lblFrom;
-            document.getElementById('lbl-to').innerText = i18n[lang].lblTo;
             document.getElementById('lbl-date').innerText = i18n[lang].lblDate;
             document.getElementById('lbl-train-no').innerText = i18n[lang].lblTrainNo;
             document.getElementById('btn-add-p').innerText = i18n[lang].btnAddP;
@@ -187,15 +198,15 @@
             // 拼接旅客內部 HTML
             card.innerHTML = `
                 <button type="button" onclick="removePassenger(${passengerCount})" class="absolute top-3 right-3 text-red-500 hover:text-red-700 text-sm font-bold cursor-pointer">✕ 刪除</button>
-                <span class="inline-block bg-slate-200 text-slate-800 text-xs px-2.5 py-0.5 rounded-full font-bold">旅客 #${passengerCount}</span>
+                <span class="inline-block bg-slate-200 text-slate-800 text-xs px-2.5 py-0.5 rounded-full font-bold">旅客 #<span class="p-index">${passengerCount}</span></span>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPName}</label>
-                        <input type="text" required class="p-name-input w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <input type="text" required class="p-name-input w-full border bg-white rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPSeat}</label>
-                        <select class="p-seat-select w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <select class="p-seat-select w-full border bg-white rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
                             <option value="二等座-靠窗">二等座 (靠窗优先)</option>
                             <option value="二等座-過道">二等座 (过道优先)</option>
                             <option value="一等座">一等座 (First Class)</option>
@@ -204,13 +215,13 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocType}</label>
-                        <select class="doc-type-select p-doc-type w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <select class="doc-type-select p-doc-type w-full border bg-white rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
                             <!-- 透過 JavaScript 語系動態填入 -->
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocNo}</label>
-                        <input type="text" required placeholder="請輸入證件上的號碼" class="p-doc-no w-full border bg-white rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
+                        <input type="text" required placeholder="請輸入證件上的號碼" class="p-doc-no w-full border bg-white rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
                     </div>
                 </div>
             `;
@@ -224,12 +235,27 @@
                 opt.innerText = doc;
                 select.appendChild(opt);
             });
+
+            reindexPassengers();
         }
 
         // 刪除指定旅客
         function removePassenger(id) {
             const card = document.getElementById(`passenger-card-${id}`);
-            if (card) card.remove();
+            if (card) {
+                card.remove();
+                reindexPassengers();
+            }
+        }
+
+        // 重新編排旅客顯示序號
+        function reindexPassengers() {
+            const cards = document.getElementById('passengers-container').children;
+            let idx = 1;
+            for (let card of cards) {
+                card.querySelector('.p-index').innerText = idx;
+                idx++;
+            }
         }
 
         // 表單提交與 AJAX 請求
