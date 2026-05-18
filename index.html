@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>跨境火車票團體訂購系統 - 旅行社專用</title>
-    <!-- 引入 Tailwind CSS 用於美化界面 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
@@ -14,7 +13,6 @@
 
     <div class="max-w-3xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100">
         
-        <!-- 頂部導航 / 語系與區域切換 -->
         <div class="bg-slate-900 px-6 py-3 flex justify-between items-center text-white text-sm">
             <span id="system-env" class="font-mono text-xs text-slate-400">Environment: Production (Serverless)</span>
             <div class="flex gap-2">
@@ -23,16 +21,13 @@
             </div>
         </div>
 
-        <!-- 頁首 Banner -->
         <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-6 py-6">
             <h1 id="title" class="text-2xl font-bold tracking-wide">跨境火車票團體訂購系統</h1>
             <p id="subtitle" class="text-sm opacity-85 mt-2">本系統專供合作旅行社填報團隊及個人火車票訂位數據，請務必核對證件資訊。</p>
         </div>
 
-        <!-- 表單主體 -->
         <form id="booking-form" onsubmit="handleSubmit(event)" class="p-6 space-y-6">
             
-            <!-- 旅行社基本資訊 -->
             <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label id="lbl-agency-name" class="block text-sm font-semibold text-gray-700 mb-1">旅行社名稱 / Agency Name</label>
@@ -44,20 +39,17 @@
                 </div>
             </div>
 
-            <!-- 第一部分：車次與行程 -->
             <div>
                 <h2 id="sec-1" class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-blue-600 pl-2">第一部分：車次與行程資訊</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">出發車站 / Departure</label>
-                        <!-- 下拉選單：固定為西九龍 -->
                         <select id="route-from" required class="w-full border rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
                             <option value="香港西九龍">香港西九龍 (Hong Kong West Kowloon)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">到達車站 / Arrival</label>
-                        <!-- 下拉選單：指定內地車站 -->
                         <select id="route-to" required class="w-full border rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-1 focus:ring-blue-500">
                             <option value="" disabled selected>-- 請選擇到達車站 --</option>
                             <option value="福田">福田 (Futian)</option>
@@ -84,32 +76,26 @@
                 </div>
             </div>
 
-            <!-- 第二部分：旅客名單 -->
             <div>
                 <div class="flex justify-between items-center mb-3 border-l-4 border-blue-600 pl-2">
                     <h2 id="sec-2" class="text-lg font-bold text-gray-800">第二部分：旅客名單</h2>
                     <button type="button" onclick="addPassenger()" id="btn-add-p" class="text-xs bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg font-bold transition">+ 新增隨行旅客</button>
                 </div>
 
-                <!-- 旅客容器 -->
                 <div id="passengers-container" class="space-y-4">
-                    <!-- 動態渲染插入點 -->
-                </div>
+                    </div>
             </div>
 
-            <!-- 狀態提示 -->
             <div id="status-message" class="hidden p-4 rounded-lg text-sm font-medium shadow-sm"></div>
 
-            <!-- 提交按鈕 -->
             <button type="submit" id="btn-submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl text-lg shadow-md hover:shadow-lg transition cursor-pointer">
                 確認並提交訂票資料 (Submit)
             </button>
         </form>
     </div>
 
-    <!-- JavaScript 業務邏輯核心 -->
     <script>
-        // ⚠️ 請在下方貼上你在第一步中，從 Google Apps Script 部署獲得的「網頁應用程式網址」
+        // 已自動為你替換為正確的 Google Apps Script 正式 API 網址
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-Dd4qB8ZwCFR01xpNgcJTefl_gP_xl2tgESqeKJgIIV5cJzt01cni2mX2ddWfdGix/exec";
 
         let currentLang = 'HK'; // 'HK' 代表繁體，'CN' 代表簡體中文
@@ -216,8 +202,7 @@
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocType}</label>
                         <select class="doc-type-select p-doc-type w-full border bg-white rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500">
-                            <!-- 透過 JavaScript 語系動態填入 -->
-                        </select>
+                            </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">${i18n[currentLang].lblPDocNo}</label>
